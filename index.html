@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>n8n Zero to Hero Roadmap</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
+  <!-- PWA Meta tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ff4500">
+  <link rel="apple-touch-icon" href="/pwa-icon.png">
+</head>
+<body class="dark-theme">
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24">
+            <line x1="4" y1="12" x2="10" y2="12" />
+            <path d="M10 12c2.5 0 3-5 8-5" />
+            <path d="M10 12c2.5 0 3 5 8 5" />
+            <circle cx="4" cy="12" r="2" />
+            <circle cx="10" cy="12" r="2" />
+            <circle cx="18" cy="7" r="2" />
+            <circle cx="18" cy="17" r="2" />
+          </svg>
+          <span>n8n with hammad</span>
+        </div>
+        <button class="close-sidebar-btn" id="close-sidebar" aria-label="Close Sidebar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- User Info Card -->
+      <div class="user-card">
+        <div class="avatar">HU</div>
+        <div class="user-info">
+          <span class="user-name" id="user-name">Hammad Ullah</span>
+          <span class="user-role">Automation Student</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <ul id="sidebar-links">
+          <!-- Dynamic Links will be inserted here -->
+          <li class="menu-label">Overview</li>
+          <li>
+            <a href="#dashboard" class="menu-item active" data-view="dashboard">
+              <i class="fa-solid fa-chart-pie"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="menu-label">Roadmap Phases</li>
+          <!-- Dynamic Phase links go here -->
+          <li class="menu-label">Resources & Extras</li>
+          <!-- Dynamic Extra links go here -->
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="contact-info">
+          <a href="mailto:aiwithhammad2026@gmail.com" title="Email Hammad"><i class="fa-regular fa-envelope"></i></a>
+          <a href="tel:0333-1904805" title="Call Hammad"><i class="fa-solid fa-phone"></i></a>
+          <button id="download-pdf-btn" class="download-pdf-btn" title="Download PDF Roadmap"><i class="fa-solid fa-file-pdf"></i></button>
+          <span class="version-tag">v1.0.0</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Open Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" placeholder="Search nodes, tools, phases, projects..." />
+            <button class="clear-search-btn" id="clear-search" style="display: none;">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="top-bar-right">
+          <!-- Global Progress Tracker Header -->
+          <div class="global-progress-header" id="global-progress-container">
+            <div class="progress-info-row">
+              <span class="progress-label">Total Progress</span>
+              <span class="progress-value" id="global-progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+            <i class="fa-solid fa-sun"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable Main Container -->
+      <div class="content-body" id="content-body">
+        
+        <!-- View: Dashboard -->
+        <section id="view-dashboard" class="content-view active">
+          <div class="welcome-banner">
+            <div class="welcome-text">
+              <h1 class="gradient-text">n8n Zero to Hero</h1>
+              <p class="subtitle">The complete, no-fluff roadmap to go from total beginner to professional automation builder.</p>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-route"></i></div>
+                <div class="stat-content">
+                  <span class="stat-num" id="stat-phases">11</span>
+                  <span class="stat-label">Learning Phases</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-cubes"></i></div>
+                <div class="stat-content">
+                  <span class="stat-num" id="stat-nodes">30+</span>
+                  <span class="stat-label">Core Nodes</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
+                <div class="stat-content">
+                  <span class="stat-num" id="stat-projects">15</span>
+                  <span class="stat-label">Real Projects</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Progress Overview -->
+          <div class="dashboard-progress-panel card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-chart-line text-primary"></i> Learning Journey Progress</h2>
+              <span class="badge" id="dashboard-items-count">0 / 0 Completed</span>
+            </div>
+            <div class="progress-details">
+              <div class="progress-ring-wrapper">
+                <svg class="progress-ring" width="120" height="120">
+                  <circle class="progress-ring-bg" stroke="var(--bg-card-border)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                  <circle class="progress-ring-circle" id="dashboard-progress-ring" stroke="var(--color-primary)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                </svg>
+                <div class="progress-ring-text" id="dashboard-progress-ring-text">0%</div>
+              </div>
+              <div class="progress-stats-list">
+                <div class="progress-stat-item">
+                  <span class="bullet-dot primary"></span>
+                  <span class="stat-text">Active Phase: <strong id="active-phase-name">Phase 0 — Foundations</strong></span>
+                </div>
+                <div class="progress-stat-item">
+                  <span class="bullet-dot success"></span>
+                  <span class="stat-text">Completed Checklist Items: <strong id="completed-items-num">0</strong></span>
+                </div>
+                <div class="progress-stat-item">
+                  <span class="bullet-dot warning"></span>
+                  <span class="stat-text">Remaining Steps: <strong id="remaining-items-num">0</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grid of Phases -->
+          <div class="section-title-wrapper">
+            <h2>Roadmap Phases</h2>
+            <p>Click on any phase to view detail lessons, search terms, and practice builds.</p>
+          </div>
+          <div class="phases-grid" id="phases-grid">
+            <!-- Dynamic Phase Cards will be inserted here -->
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Parsing roadmap markdown and generating dashboard...</p>
+            </div>
+          </div>
+
+          <!-- Contact & Social Media Section -->
+          <div class="contact-section-container card" id="contact-section">
+            <div class="contact-grid">
+              
+              <!-- Left Column: Info and Social Media Accounts -->
+              <div class="contact-info-col">
+                <h2 class="gradient-text">Connect with Me</h2>
+                <p class="contact-intro-text">Feel free to contact me for n8n automation, AI workflows, and collaboration opportunities.</p>
+                
+                <div class="social-links-list">
+                  <a href="https://www.tiktok.com/@aiwithhammad2026" target="_blank" class="social-btn tiktok-btn">
+                    <div class="social-btn-icon"><i class="fa-brands fa-tiktok"></i></div>
+                    <div class="social-btn-content">
+                      <span class="social-platform">TikTok</span>
+                      <span class="social-handle">@aiwithhammad2026</span>
+                    </div>
+                  </a>
+                  
+                  <a href="https://www.instagram.com/aiwithhammad2026" target="_blank" class="social-btn instagram-btn">
+                    <div class="social-btn-icon"><i class="fa-brands fa-instagram"></i></div>
+                    <div class="social-btn-content">
+                      <span class="social-platform">Instagram</span>
+                      <span class="social-handle">@aiwithhammad2026</span>
+                    </div>
+                  </a>
+                  
+                  <a href="https://www.facebook.com/share/1DAJ4M82z2/?mibextid=wwXIfr" target="_blank" class="social-btn facebook-btn">
+                    <div class="social-btn-icon"><i class="fa-brands fa-facebook-f"></i></div>
+                    <div class="social-btn-content">
+                      <span class="social-platform">Facebook</span>
+                      <span class="social-handle">Follow on Facebook</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Right Column: Contact Form -->
+              <div class="contact-form-col">
+                <h3>Send a Message</h3>
+                <form id="contact-form" class="premium-form">
+                  <div class="form-group-row">
+                    <div class="form-group">
+                      <label for="form-name">Full Name</label>
+                      <input type="text" id="form-name" placeholder="John Doe" required />
+                    </div>
+                    <div class="form-group">
+                      <label for="form-email">Email Address</label>
+                      <input type="email" id="form-email" placeholder="john@example.com" required />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="form-subject">Subject</label>
+                    <input type="text" id="form-subject" placeholder="Project Inquiry" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="form-message">Message</label>
+                    <textarea id="form-message" rows="4" placeholder="Hi Hammad, I'd like to collaborate on..." required></textarea>
+                  </div>
+                  <button type="submit" class="submit-form-btn">
+                    <span>Send Message</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- View: Phase Detail (Dynamic container showing the selected phase) -->
+        <section id="view-phase-detail" class="content-view">
+          <button class="back-to-dashboard-btn" id="back-to-dashboard">
+            <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+          </button>
+          <div id="phase-detail-container">
+            <!-- Dynamic Phase detail content will be rendered here -->
+          </div>
+        </section>
+
+        <!-- View: Resources & Extras (Dynamic container for extra markdown sections) -->
+        <section id="view-extra-section" class="content-view">
+          <div id="extra-section-container" class="card extra-card">
+            <!-- Dynamic extra markdown content will be rendered here -->
+          </div>
+        </section>
+
+        <!-- View: Search Results -->
+        <section id="view-search-results" class="content-view">
+          <div class="search-results-header">
+            <h2>Search Results for: <span id="search-query-display" class="gradient-text">""</span></h2>
+            <p id="search-results-count">Found 0 matches</p>
+          </div>
+          <div id="search-results-container">
+            <!-- Dynamic search results will be rendered here -->
+          </div>
+        </section>
+        
+      </div>
+    </main>
+  </div>
+
+  <!-- Print Only Container -->
+  <div id="print-container"></div>
+
+  <!-- Marked Parser Library -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Main Application Script -->
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
