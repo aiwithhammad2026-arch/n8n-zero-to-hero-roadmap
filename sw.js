@@ -3,7 +3,7 @@
  * Enables offline functionality by caching critical app shells and resources.
  */
 
-const CACHE_NAME = 'n8n-roadmap-v1';
+const CACHE_NAME = 'n8n-roadmap-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
