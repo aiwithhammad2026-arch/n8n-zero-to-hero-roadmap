@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet">
   <!-- FontAwesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/style.css">
@@ -16,7 +19,10 @@
   <meta name="theme-color" content="#ff4500">
   <link rel="apple-touch-icon" href="/pwa-icon.png">
 </head>
+
 <body class="dark-theme">
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
   <div class="app-container">
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="sidebar">
@@ -67,8 +73,8 @@
       <div class="sidebar-footer">
         <div class="contact-info">
           <a href="mailto:aiwithhammad2026@gmail.com" title="Email Hammad"><i class="fa-regular fa-envelope"></i></a>
+          <a href="https://wa.me/923331904805" target="_blank" title="WhatsApp Hammad"><i class="fa-brands fa-whatsapp"></i></a>
           <a href="tel:0333-1904805" title="Call Hammad"><i class="fa-solid fa-phone"></i></a>
-          <button id="download-pdf-btn" class="download-pdf-btn" title="Download PDF Roadmap"><i class="fa-solid fa-file-pdf"></i></button>
           <span class="version-tag">v1.0.0</span>
         </div>
       </div>
@@ -112,13 +118,14 @@
 
       <!-- Scrollable Main Container -->
       <div class="content-body" id="content-body">
-        
+
         <!-- View: Dashboard -->
         <section id="view-dashboard" class="content-view active">
           <div class="welcome-banner">
             <div class="welcome-text">
               <h1 class="gradient-text">n8n Zero to Hero</h1>
-              <p class="subtitle">The complete, no-fluff roadmap to go from total beginner to professional automation builder.</p>
+              <p class="subtitle">The complete, no-code roadmap to go from total beginner to professional automation
+                builder.</p>
             </div>
             <div class="stats-grid">
               <div class="stat-card">
@@ -154,15 +161,18 @@
             <div class="progress-details">
               <div class="progress-ring-wrapper">
                 <svg class="progress-ring" width="120" height="120">
-                  <circle class="progress-ring-bg" stroke="var(--bg-card-border)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
-                  <circle class="progress-ring-circle" id="dashboard-progress-ring" stroke="var(--color-primary)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                  <circle class="progress-ring-bg" stroke="var(--bg-card-border)" stroke-width="8" fill="transparent"
+                    r="50" cx="60" cy="60" />
+                  <circle class="progress-ring-circle" id="dashboard-progress-ring" stroke="var(--color-primary)"
+                    stroke-width="8" fill="transparent" r="50" cx="60" cy="60" />
                 </svg>
                 <div class="progress-ring-text" id="dashboard-progress-ring-text">0%</div>
               </div>
               <div class="progress-stats-list">
                 <div class="progress-stat-item">
                   <span class="bullet-dot primary"></span>
-                  <span class="stat-text">Active Phase: <strong id="active-phase-name">Phase 0 — Foundations</strong></span>
+                  <span class="stat-text">Active Phase: <strong id="active-phase-name">Phase 0 —
+                      Foundations</strong></span>
                 </div>
                 <div class="progress-stat-item">
                   <span class="bullet-dot success"></span>
@@ -192,13 +202,22 @@
           <!-- Contact & Social Media Section -->
           <div class="contact-section-container card" id="contact-section">
             <div class="contact-grid">
-              
+
               <!-- Left Column: Info and Social Media Accounts -->
               <div class="contact-info-col">
                 <h2 class="gradient-text">Connect with Me</h2>
-                <p class="contact-intro-text">Feel free to contact me for n8n automation, AI workflows, and collaboration opportunities.</p>
-                
+                <p class="contact-intro-text">Feel free to contact me for n8n automation, AI workflows, and
+                  collaboration opportunities.</p>
+
                 <div class="social-links-list">
+                  <a href="https://wa.me/923331904805" target="_blank" class="social-btn whatsapp-btn">
+                    <div class="social-btn-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="social-btn-content">
+                      <span class="social-platform">WhatsApp</span>
+                      <span class="social-handle">03331904805</span>
+                    </div>
+                  </a>
+
                   <a href="https://www.tiktok.com/@aiwithhammad2026" target="_blank" class="social-btn tiktok-btn">
                     <div class="social-btn-icon"><i class="fa-brands fa-tiktok"></i></div>
                     <div class="social-btn-content">
@@ -206,7 +225,7 @@
                       <span class="social-handle">@aiwithhammad2026</span>
                     </div>
                   </a>
-                  
+
                   <a href="https://www.instagram.com/aiwithhammad2026" target="_blank" class="social-btn instagram-btn">
                     <div class="social-btn-icon"><i class="fa-brands fa-instagram"></i></div>
                     <div class="social-btn-content">
@@ -214,8 +233,9 @@
                       <span class="social-handle">@aiwithhammad2026</span>
                     </div>
                   </a>
-                  
-                  <a href="https://www.facebook.com/share/1DAJ4M82z2/?mibextid=wwXIfr" target="_blank" class="social-btn facebook-btn">
+
+                  <a href="https://www.facebook.com/share/1DAJ4M82z2/?mibextid=wwXIfr" target="_blank"
+                    class="social-btn facebook-btn">
                     <div class="social-btn-icon"><i class="fa-brands fa-facebook-f"></i></div>
                     <div class="social-btn-content">
                       <span class="social-platform">Facebook</span>
@@ -223,35 +243,6 @@
                     </div>
                   </a>
                 </div>
-              </div>
-              
-              <!-- Right Column: Contact Form -->
-              <div class="contact-form-col">
-                <h3>Send a Message</h3>
-                <form id="contact-form" class="premium-form">
-                  <div class="form-group-row">
-                    <div class="form-group">
-                      <label for="form-name">Full Name</label>
-                      <input type="text" id="form-name" placeholder="John Doe" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="form-email">Email Address</label>
-                      <input type="email" id="form-email" placeholder="john@example.com" required />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="form-subject">Subject</label>
-                    <input type="text" id="form-subject" placeholder="Project Inquiry" required />
-                  </div>
-                  <div class="form-group">
-                    <label for="form-message">Message</label>
-                    <textarea id="form-message" rows="4" placeholder="Hi Hammad, I'd like to collaborate on..." required></textarea>
-                  </div>
-                  <button type="submit" class="submit-form-btn">
-                    <span>Send Message</span>
-                    <i class="fa-solid fa-paper-plane"></i>
-                  </button>
-                </form>
               </div>
 
             </div>
@@ -285,17 +276,35 @@
             <!-- Dynamic search results will be rendered here -->
           </div>
         </section>
-        
+
       </div>
     </main>
   </div>
 
-  <!-- Print Only Container -->
-  <div id="print-container"></div>
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <button class="mob-nav-btn active" id="mob-nav-dashboard" title="Dashboard">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>Dashboard</span>
+    </button>
+    <button class="mob-nav-btn" id="mob-nav-menu" title="Menu">
+      <i class="fa-solid fa-bars"></i>
+      <span>Menu</span>
+    </button>
+    <button class="mob-nav-btn" id="mob-nav-search" title="Search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Search</span>
+    </button>
+    <button class="mob-nav-btn" id="mob-nav-contact" title="Contact">
+      <i class="fa-solid fa-envelope"></i>
+      <span>Contact</span>
+    </button>
+  </nav>
 
   <!-- Marked Parser Library -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <!-- Main Application Script -->
   <script type="module" src="/app.js"></script>
 </body>
+
 </html>

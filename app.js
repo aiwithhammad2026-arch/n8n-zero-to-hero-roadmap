@@ -76,7 +76,6 @@ function initProgressStorage() {
 function saveProgress() {
   localStorage.setItem('n8n-roadmap-progress', JSON.stringify(STATE.checkedItems));
   updateProgressIndicators();
-  generatePrintLayout();
 }
 
 // Fetch & Parse Markdown
@@ -88,9 +87,9 @@ async function loadRoadmapData() {
     }
     const markdown = await response.text();
     STATE.markdown = markdown;
-    
+
     parseRoadmapMarkdown(markdown);
-    
+
     // Set dynamic elements in HTML
     if (STATE.metadata.preparedFor) {
       document.getElementById('user-name').textContent = STATE.metadata.preparedFor;
@@ -107,8 +106,7 @@ async function loadRoadmapData() {
     renderSidebarMenu();
     renderDashboardPhases();
     updateProgressIndicators();
-    generatePrintLayout();
-    
+
   } catch (error) {
     console.error('Error loading roadmap markdown:', error);
     document.getElementById('phases-grid').innerHTML = `
@@ -128,7 +126,7 @@ async function loadRoadmapData() {
  */
 function parseRoadmapMarkdown(markdown) {
   const lines = markdown.split(/\r?\n/);
-  
+
   STATE.metadata = {
     preparedFor: '',
     email: '',
@@ -179,16 +177,16 @@ function parseRoadmapMarkdown(markdown) {
       }
 
       const headerText = trimmed.replace('## ', '');
-      
+
       if (headerText.toLowerCase().includes('phase ')) {
         // Start a new Phase
         currentBlockType = 'phase';
-        
+
         // Extract Phase Details: "Phase 0 — Foundations (Beginner) · ⏱ 3–5 days"
         const parts = headerText.split('·');
         const titlePart = parts[0].trim();
         const durationPart = parts[1] ? parts[1].trim() : '';
-        
+
         // Extract phase number
         const phaseNumMatch = titlePart.match(/Phase\s+(\d+)/i);
         const phaseNumber = phaseNumMatch ? parseInt(phaseNumMatch[1]) : STATE.phases.length;
@@ -207,19 +205,19 @@ function parseRoadmapMarkdown(markdown) {
         };
         currentGroup = 'General';
         currentPhase.groups[currentGroup] = [];
-        
+
         STATE.phases.push(currentPhase);
       } else {
         // Start a generic section (e.g. "How to use this roadmap", "Bonus...", "Resources...")
         currentBlockType = 'extra';
         const extraId = 'extra-' + headerText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        
+
         currentExtra = {
           id: extraId,
           title: headerText,
           contentLines: []
         };
-        
+
         STATE.extras.push(currentExtra);
       }
       continue;
@@ -256,12 +254,12 @@ function parseRoadmapMarkdown(markdown) {
       if (trimmed.startsWith('- [ ]') || trimmed.startsWith('- [x]')) {
         const checked = trimmed.startsWith('- [x]');
         const itemContent = trimmed.substring(5).trim();
-        
+
         // Extract description if present: "Text — Description"
         let title = itemContent;
         let desc = '';
         const dividerIdx = itemContent.indexOf('—');
-        
+
         if (dividerIdx !== -1) {
           title = itemContent.substring(0, dividerIdx).trim();
           desc = itemContent.substring(dividerIdx + 1).trim();
@@ -321,7 +319,7 @@ function parseRoadmapMarkdown(markdown) {
  */
 function parseAndAttachTable(phase, lines) {
   if (lines.length < 3) return; // Must have header, separator, and at least 1 row
-  
+
   const headers = lines[0].split('|').map(s => s.trim()).filter(s => s !== '');
   const rows = [];
 
@@ -342,11 +340,11 @@ function parseAndAttachTable(phase, lines) {
 // Sidebar Links Generation
 function renderSidebarMenu() {
   const sidebarLinks = document.getElementById('sidebar-links');
-  
+
   // Clear dynamic elements, keeping static "Overview" and "Dashboard"
   const overviewHeader = sidebarLinks.querySelector('.menu-label');
   const dashboardItem = sidebarLinks.querySelector('a[data-view="dashboard"]').parentElement;
-  
+
   sidebarLinks.innerHTML = '';
   sidebarLinks.appendChild(overviewHeader);
   sidebarLinks.appendChild(dashboardItem);
@@ -361,7 +359,7 @@ function renderSidebarMenu() {
     const li = document.createElement('li');
     // Get phase short title
     const shortTitle = phase.title.replace('Phase ', 'P');
-    
+
     li.innerHTML = `
       <a href="#${phase.id}" class="menu-item" data-view="phase" data-id="${phase.id}">
         <i class="fa-solid fa-list-check"></i>
@@ -383,7 +381,7 @@ function renderSidebarMenu() {
     let icon = 'fa-bookmark';
     if (extra.title.toLowerCase().includes('bonus')) icon = 'fa-gift';
     if (extra.title.toLowerCase().includes('avoid')) icon = 'fa-circle-xmark';
-    
+
     li.innerHTML = `
       <a href="#${extra.id}" class="menu-item" data-view="extra" data-id="${extra.id}">
         <i class="fa-solid ${icon}"></i>
@@ -407,13 +405,13 @@ function renderSidebarMenu() {
   document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', (e) => {
       e.preventDefault();
-      
+
       // Close mobile sidebar if open
       document.getElementById('sidebar').classList.remove('mobile-open');
 
       const view = item.getAttribute('data-view');
       const id = item.getAttribute('data-id');
-      
+
       switchView(view, id);
     });
   });
@@ -428,7 +426,7 @@ function renderDashboardPhases() {
     const card = document.createElement('div');
     card.className = 'phase-card';
     card.setAttribute('data-id', phase.id);
-    
+
     // Count items
     let itemCount = 0;
     Object.values(phase.groups).forEach(items => {
@@ -464,7 +462,7 @@ function renderDashboardPhases() {
 function updateProgressIndicators() {
   let totalItemsCount = 0;
   let totalCheckedCount = 0;
-  
+
   STATE.phases.forEach(phase => {
     let phaseItemsCount = 0;
     let phaseCheckedCount = 0;
@@ -482,7 +480,7 @@ function updateProgressIndicators() {
     });
 
     const phasePct = phaseItemsCount > 0 ? Math.round((phaseCheckedCount / phaseItemsCount) * 100) : 0;
-    
+
     // Update Sidebar badges
     const badge = document.getElementById(`sidebar-badge-${phase.id}`);
     if (badge) {
@@ -590,7 +588,7 @@ function renderPhaseDetail(phaseId) {
     phase.tables.forEach(table => {
       html += `<div class="card table-card" style="overflow-x: auto;">`;
       html += `<table><thead><tr>`;
-      
+
       table.headers.forEach(h => {
         html += `<th>${h}</th>`;
       });
@@ -622,7 +620,7 @@ function renderPhaseDetail(phaseId) {
     items.forEach(item => {
       const itemKey = `${phase.id}:${item.title}`;
       const isChecked = STATE.checkedItems[itemKey] ? 'checked' : '';
-      
+
       html += `
         <div class="checklist-item ${isChecked}" data-key="${itemKey}">
           <div class="checklist-checkbox-wrapper">
@@ -682,7 +680,7 @@ function renderPhaseDetail(phaseId) {
   container.querySelectorAll('.checklist-item').forEach(el => {
     const checkbox = el.querySelector('input[type="checkbox"]');
     const key = el.getAttribute('data-key');
-    
+
     // Toggle by clicking anywhere on the card
     el.addEventListener('click', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.closest('a')) {
@@ -771,7 +769,7 @@ function renderBonusSection(extra, container) {
       <div class="collapsible-content">
         <ul style="margin: 0; padding-left: 20px;">
   `;
-  
+
   mistakes.forEach(m => {
     html += `<li style="margin-bottom: 12px; font-size: 15px; color: var(--color-text-secondary);">${marked.parseInline(m)}</li>`;
   });
@@ -834,28 +832,28 @@ function switchView(viewName, resourceId = null) {
   } else if (viewName === 'phase' && resourceId) {
     const item = document.querySelector(`.menu-item[data-view="phase"][data-id="${resourceId}"]`);
     if (item) item.classList.add('active');
-    
+
     renderPhaseDetail(resourceId);
     document.getElementById('view-phase-detail').classList.add('active');
     updateProgressIndicators();
   } else if (viewName === 'extra' && resourceId) {
     const item = document.querySelector(`.menu-item[data-view="extra"][data-id="${resourceId}"]`);
     if (item) item.classList.add('active');
-    
+
     renderExtraSection(resourceId);
     document.getElementById('view-extra-section').classList.add('active');
   } else if (viewName === 'contact') {
     const item = document.getElementById('sidebar-contact-btn');
     if (item) item.classList.add('active');
-    
+
     // Deactivate detail/extra/search
     document.getElementById('view-phase-detail').classList.remove('active');
     document.getElementById('view-extra-section').classList.remove('active');
     document.getElementById('view-search-results').classList.remove('active');
-    
+
     // Activate dashboard view
     document.getElementById('view-dashboard').classList.add('active');
-    
+
     // Scroll to contact section
     const contactSec = document.getElementById('contact-section');
     if (contactSec) {
@@ -881,7 +879,7 @@ function performSearch(query) {
   const queryDisplay = document.getElementById('search-query-display');
 
   queryDisplay.textContent = `"${query}"`;
-  
+
   if (q === '') {
     switchView('dashboard');
     return;
@@ -896,7 +894,7 @@ function performSearch(query) {
   function highlight(text) {
     const idx = text.toLowerCase().indexOf(q);
     if (idx === -1) return text;
-    
+
     // Safe text replacement keeping casing
     const originalText = text.substring(idx, idx + q.length);
     return text.replace(new RegExp(q, 'i'), `<span class="highlight">${originalText}</span>`);
@@ -930,7 +928,7 @@ function performSearch(query) {
       phase.groups[groupName].forEach(item => {
         const titleMatch = item.title.toLowerCase().includes(q);
         const descMatch = item.description && item.description.toLowerCase().includes(q);
-        
+
         if (titleMatch || descMatch) {
           phaseHasMatch = true;
           resultsCount++;
@@ -967,7 +965,7 @@ function performSearch(query) {
     if (matchedYoutube.length > 0) {
       phaseHasMatch = true;
       resultsCount += matchedYoutube.length;
-      
+
       let chips = '';
       matchedYoutube.forEach(term => {
         chips += `
@@ -1053,7 +1051,7 @@ function performSearch(query) {
         extraHasMatch = true;
         snippetCount++;
         resultsCount++;
-        
+
         extraHtml += `
           <p style="background-color: var(--bg-input); padding: 8px 12px; border-radius: var(--radius-sm); margin-bottom: 8px; font-size: 13px;">
             ... ${highlight(cleanLine)} ...
@@ -1070,7 +1068,7 @@ function performSearch(query) {
   });
 
   searchResultsCount.textContent = `Found ${resultsCount} matches`;
-  
+
   if (resultsCount === 0) {
     searchResultsContainer.innerHTML = `
       <div class="loading-state" style="padding: 40px 0;">
@@ -1080,7 +1078,7 @@ function performSearch(query) {
     `;
   } else {
     searchResultsContainer.innerHTML = html;
-    
+
     // Bind checkbox events in search results
     searchResultsContainer.querySelectorAll('.checklist-item').forEach(el => {
       const checkbox = el.querySelector('input[type="checkbox"]');
@@ -1111,33 +1109,67 @@ function performSearch(query) {
 // Expose switchView to window so inline onclick handlers in Search Results work
 window.appSwitchView = switchView;
 
+// Helper: open/close sidebar with overlay
+function openMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.add('mobile-open');
+  if (overlay) {
+    overlay.classList.add('active');
+  }
+}
+
+function closeMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.remove('mobile-open');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+}
+
+// Helper: update bottom nav active state
+function setMobileNavActive(btnId) {
+  document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById(btnId);
+  if (btn) btn.classList.add('active');
+}
+
 // Set up UI Event Listeners
 function setupEventListeners() {
   // Back to dashboard
   document.getElementById('back-to-dashboard').addEventListener('click', () => {
     switchView('dashboard');
+    setMobileNavActive('mob-nav-dashboard');
   });
 
   // Mobile sidebar toggle
   const mobileToggle = document.getElementById('mobile-toggle');
-  const closeSidebar = document.getElementById('close-sidebar');
-  const sidebar = document.getElementById('sidebar');
+  const closeSidebarBtn = document.getElementById('close-sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
 
   mobileToggle.addEventListener('click', () => {
-    sidebar.classList.add('mobile-open');
+    openMobileSidebar();
   });
 
-  closeSidebar.addEventListener('click', () => {
-    sidebar.classList.remove('mobile-open');
+  closeSidebarBtn.addEventListener('click', () => {
+    closeMobileSidebar();
   });
 
-  // Close mobile sidebar by clicking outside
-  document.addEventListener('click', (e) => {
-    if (sidebar.classList.contains('mobile-open') && 
-        !sidebar.contains(e.target) && 
-        !mobileToggle.contains(e.target)) {
-      sidebar.classList.remove('mobile-open');
-    }
+  // Close sidebar when clicking overlay backdrop
+  if (overlay) {
+    overlay.addEventListener('click', () => {
+      closeMobileSidebar();
+    });
+  }
+
+  // Close mobile sidebar when a menu item is clicked (mobile UX)
+  document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth <= 1024) {
+        closeMobileSidebar();
+      }
+    });
   });
 
   // Search logic listeners
@@ -1159,40 +1191,90 @@ function setupEventListeners() {
     clearSearchBtn.style.display = 'none';
     searchInput.focus();
     switchView('dashboard');
+    setMobileNavActive('mob-nav-dashboard');
   });
 
-  // Contact Form Submit Handler
+  // Contact Form Submit Handler (FormSubmit.co)
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
-      const name = document.getElementById('form-name').value;
-      const email = document.getElementById('form-email').value;
-      const subject = document.getElementById('form-subject').value;
-      const message = document.getElementById('form-message').value;
-      
-      const emailBody = `Full Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-      
-      // Construct mailto link
-      const mailtoUrl = `mailto:aiwithhammad2026@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-      
-      // Trigger mailto
-      window.location.href = mailtoUrl;
-      
-      // Reset form
-      contactForm.reset();
-      
-      // Show confirmation message
-      showToastMessage("Opening your default email client...");
+
+      const submitBtn = contactForm.querySelector('.submit-form-btn');
+      const subject = document.getElementById('form-subject').value.trim();
+
+      // Sync subject to the hidden _subject field
+      document.getElementById('hidden-subject').value = subject;
+
+      // Show loading state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+      try {
+        const formData = new FormData(contactForm);
+
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToastMessage('✅ Message sent! Check your inbox for a confirmation.');
+          contactForm.reset();
+        } else {
+          throw new Error(result.message || 'Send failed');
+        }
+
+      } catch (err) {
+        console.error('Form submit error:', err);
+        showToastMessage('❌ Failed to send. Please email directly: aiwithhammad2026@gmail.com');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Send Message</span><i class="fa-solid fa-paper-plane"></i>';
+      }
     });
   }
 
-  // PDF Download Button Handler
-  const downloadPdfBtn = document.getElementById('download-pdf-btn');
-  if (downloadPdfBtn) {
-    downloadPdfBtn.addEventListener('click', () => {
-      window.print();
+  // --- Mobile Bottom Navigation Bar ---
+  const mobNavDashboard = document.getElementById('mob-nav-dashboard');
+  const mobNavMenu = document.getElementById('mob-nav-menu');
+  const mobNavSearch = document.getElementById('mob-nav-search');
+  const mobNavContact = document.getElementById('mob-nav-contact');
+
+  if (mobNavDashboard) {
+    mobNavDashboard.addEventListener('click', () => {
+      switchView('dashboard');
+      setMobileNavActive('mob-nav-dashboard');
+    });
+  }
+
+  if (mobNavMenu) {
+    mobNavMenu.addEventListener('click', () => {
+      openMobileSidebar();
+    });
+  }
+
+  if (mobNavSearch) {
+    mobNavSearch.addEventListener('click', () => {
+      // Focus the search input
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      setMobileNavActive('mob-nav-search');
+    });
+  }
+
+  if (mobNavContact) {
+    mobNavContact.addEventListener('click', () => {
+      switchView('contact');
+      setMobileNavActive('mob-nav-contact');
     });
   }
 }
@@ -1207,111 +1289,10 @@ function showToastMessage(msg) {
   }
   toast.textContent = msg;
   toast.className = 'toast-show';
-  
+
   setTimeout(() => {
     toast.className = '';
   }, 4000);
 }
 
-// Generate print-only DOM container structure with full checklist details
-function generatePrintLayout() {
-  const container = document.getElementById('print-container');
-  if (!container) return;
-
-  let html = `
-    <div class="print-header">
-      <h1>${STATE.metadata.title || 'n8n Zero to Hero Roadmap'}</h1>
-      <div class="print-meta">
-        <p><strong>Prepared for:</strong> ${STATE.metadata.preparedFor || 'Hammad Ullah'}</p>
-        <p><strong>Email:</strong> ${STATE.metadata.email || 'aiwithhammad2026@gmail.com'} | <strong>Phone:</strong> ${STATE.metadata.phone || '0333-1904805'}</p>
-        <p><strong>Stats:</strong> ${STATE.metadata.stats || '11 Learning phases · 30+ Core nodes'}</p>
-      </div>
-    </div>
-    <hr style="border:none; border-top: 2px solid #000; margin: 20px 0;" />
-  `;
-
-  // Append phases sequentially
-  STATE.phases.forEach(phase => {
-    html += `
-      <div class="print-phase" style="page-break-inside: avoid; margin-bottom: 30px;">
-        <h2 style="font-size: 20px; margin-bottom: 8px;">${phase.title} <span style="font-size: 13px; font-weight: normal; color: #555;">— ${phase.duration}</span></h2>
-        <div class="print-goal" style="background-color: #f7f7f7; border-left: 3px solid #ff4500; padding: 10px; font-size: 13px; margin-bottom: 15px; font-style: italic;">
-          <strong>Goal:</strong> ${phase.goal}
-        </div>
-    `;
-
-    // Tables
-    if (phase.tables && phase.tables.length > 0) {
-      phase.tables.forEach(table => {
-        html += `<table style="width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px;"><thead style="background-color: #f0f0f0;"><tr>`;
-        table.headers.forEach(h => html += `<th style="border: 1px solid #ddd; padding: 8px; text-align: left;">${h}</th>`);
-        html += `</tr></thead><tbody>`;
-        table.rows.forEach(row => {
-          html += `<tr>`;
-          row.forEach(cell => html += `<td style="border: 1px solid #ddd; padding: 8px; text-align: left;">${marked.parseInline(cell)}</td>`);
-          html += `</tr>`;
-        });
-        html += `</tbody></table>`;
-      });
-    }
-
-    // Checklist
-    Object.keys(phase.groups).forEach(groupName => {
-      const items = phase.groups[groupName];
-      if (items.length === 0) return;
-      html += `<h3 style="font-size: 14px; margin-top: 15px; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px;">${groupName}</h3>`;
-      html += `<ul style="list-style: none; padding-left: 0; margin-bottom: 15px;">`;
-      items.forEach(item => {
-        const itemKey = `${phase.id}:${item.title}`;
-        const isChecked = STATE.checkedItems[itemKey] ? '☒' : '☐';
-        html += `<li style="font-size: 13px; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 8px;">`;
-        html += `<span style="font-family: monospace; font-size: 14px; line-height: 1;">${isChecked}</span>`;
-        html += `<span><strong>${item.title}</strong>${item.description ? ` — ${item.description}` : ''}</span>`;
-        html += `</li>`;
-      });
-      html += `</ul>`;
-    });
-
-    // Practice Builds
-    if (phase.practiceBuilds && phase.practiceBuilds.length > 0) {
-      html += `<h4 style="font-size: 13px; margin-top: 15px; margin-bottom: 6px;">Practice Builds:</h4>`;
-      html += `<ul style="padding-left: 20px; font-size: 13px; margin-bottom: 15px;">`;
-      phase.practiceBuilds.forEach(build => {
-        html += `<li style="margin-bottom: 4px;">🏆 ${build}</li>`;
-      });
-      html += `</ul>`;
-    }
-
-    // Youtube Searches
-    if (phase.youtubeSearches && phase.youtubeSearches.length > 0) {
-      html += `<p style="font-size: 12px; color: #555; margin-top: 10px;"><strong>YouTube Searches:</strong> ${phase.youtubeSearches.map(s => `<code>${s}</code>`).join(' · ')}</p>`;
-    }
-
-    html += `</div><hr style="border:none; border-top: 1px solid #ddd; margin: 20px 0;" />`;
-  });
-
-  // Append extras
-  STATE.extras.forEach(extra => {
-    const rawMarkdown = extra.contentLines.join('\n');
-    html += `
-      <div class="print-extra" style="page-break-inside: avoid; margin-bottom: 30px;">
-        <h2 style="font-size: 20px; margin-bottom: 15px;">${extra.title}</h2>
-        <div class="print-markdown" style="font-size: 13px; line-height: 1.5;">
-          ${marked.parse(rawMarkdown)}
-        </div>
-      </div>
-      <hr style="border:none; border-top: 1px solid #ddd; margin: 20px 0;" />
-    `;
-  });
-
-  // Footer
-  html += `
-    <div class="print-footer" style="text-align: center; font-size: 11px; color: #777; margin-top: 30px; page-break-before: avoid;">
-      <p>Roadmap prepared for <strong>${STATE.metadata.preparedFor || 'Hammad Ullah'}</strong></p>
-      <p>Contact: ${STATE.metadata.email || 'aiwithhammad2026@gmail.com'} | ${STATE.metadata.phone || '0333-1904805'}</p>
-      <p>Generated dynamically from the live web roadmap website</p>
-    </div>
-  `;
-
-  container.innerHTML = html;
-}
+// (PDF/Print functionality removed)
